@@ -5,6 +5,8 @@ using namespace std;
 
 Animation::Animation() {}
 
+Animation::~Animation(){}
+
 // Load city/game background
 bool Animation::loadBackground(const sf::RenderWindow& window)
 {
