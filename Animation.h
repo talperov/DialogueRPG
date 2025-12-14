@@ -26,6 +26,8 @@ private:
 
 public:
     Animation();
+    ~Animation();
+
 
     // Character creation
     bool createAnime();
