@@ -9,7 +9,7 @@ struct Scene
     bool showCharacters;                               // Whether to reveal characters after dialogue
 };
 
-// Intro scene â€“ Left character speaks first
+// Intro scene – Left character speaks first
 Scene animeIntroLeft =
 {
     {
@@ -32,7 +32,7 @@ Scene sceneBattleStart =
 {
     {
         { "We must fight together!\nChoose your move wisely.", Dialogue::DialogueLine::Speaker::LEFT },
-        { "Iâ€™ve got your back!\nLetâ€™s do this!", Dialogue::DialogueLine::Speaker::RIGHT }
+        { "I’ve got your back!\nLet’s do this!", Dialogue::DialogueLine::Speaker::RIGHT }
     },
     true // Both characters visible
 };

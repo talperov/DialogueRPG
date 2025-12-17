@@ -55,6 +55,8 @@ bool Animation::loadMenuBackground(const sf::RenderWindow& window)
     return true;
 }
 
+
+
 // Load AnimeMan
 bool Animation::createAnime()
 {
@@ -134,10 +136,50 @@ bool Animation::loadMenuButtons()
     return true;
 }
 
+bool Animation::loadTextBubble()
+{
+    if (!textBubbleTexture.loadFromFile("Sprites/MenuButtons/text.png"))
+    {
+        std::cout << "Failed to load text bubble!\n";
+        return false;
+    }
+
+    textBubbleSprite.setTexture(textBubbleTexture);
+
+    // Scale bubble to be bigger if needed
+    textBubbleSprite.setScale(7.25f, 7.25f); // Adjust scale as needed
+
+    // Center horizontally and place near bottom of screen
+    sf::Vector2u winSize = sf::Vector2u(800, 500); // You can pass window size if you want dynamic
+    sf::FloatRect bubbleBounds = textBubbleSprite.getLocalBounds();
+    textBubbleSprite.setOrigin(bubbleBounds.width / 2.f, bubbleBounds.height / 2.f);
+    textBubbleSprite.setPosition(winSize.x / 2.f, winSize.y - bubbleBounds.height);
+
+    return true;
+}
+
+bool Animation::createEnemy(const std::string& filePath, sf::Vector2f position, float scale)
+{
+    if (!enemyTexture.loadFromFile(filePath))
+        return false; // failed to load
+    enemySprite.setTexture(enemyTexture);
+    enemySprite.setScale(scale, scale);
+    enemySprite.setPosition(position);
+    return true;
+}
+
+// Return reference to enemy sprite
+sf::Sprite& Animation::getEnemySprite()
+{
+    return enemySprite;
+}
+
+
 
 // Getters
 sf::Sprite& Animation::getAnimeSprite() { return animeSprite; }
 sf::Sprite& Animation::getGreekSprite() { return greekSprite; }
+sf::Sprite& Animation::getTextBubbleSprite() { return textBubbleSprite; }
 // sf::Sprite& Animation::getGoldSprite() { return goldSprite; }
 sf::Sprite& Animation::getBackground() { return backgroundSprite; }
 sf::Sprite& Animation::getPlaySprite() { return playSprite; }

@@ -11,10 +11,15 @@ private:
     sf::Sprite animeSprite;
     sf::Sprite greekSprite;
     // sf::Sprite goldSprite;
+    
+    // Enemy sprite
+    sf::Texture enemyTexture;  // Enemy texture
+    sf::Sprite enemySprite;    // Enemy sprite
 
     // Background texture and sprite
     sf::Texture backgroundTexture;
     sf::Sprite backgroundSprite;
+    sf::Texture textTexture;
 
     // Menu button textures and sprites
     sf::Texture playTex;
@@ -23,6 +28,10 @@ private:
     sf::Sprite playSprite;
     sf::Sprite helpSprite;
     sf::Sprite exitSprite;
+
+    //Text Bubble Textures and Sprites
+    sf::Texture textBubbleTexture; // Bubble texture
+    sf::Sprite  textBubbleSprite;  // Bubble sprite
 
 public:
     Animation();
@@ -41,9 +50,18 @@ public:
     // Menu buttons
     bool loadMenuButtons();
 
+    //Text Bubble
+    bool loadTextBubble();
+
+
+    // Functions to create enemy
+    bool createEnemy(const std::string& filePath, sf::Vector2f position, float scale = 1.5f);
+    sf::Sprite& getEnemySprite(); // Access enemy sprite
+
     // Getters
     sf::Sprite& getAnimeSprite();
     sf::Sprite& getGreekSprite();
+    sf::Sprite& getTextBubbleSprite();
     // sf::Sprite& getGoldSprite();
     sf::Sprite& getBackground();
     sf::Sprite& getPlaySprite();
