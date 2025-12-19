@@ -11,16 +11,24 @@ private:
     int heavyAttack;
     int potionHeal;
 
+    // Only level now — no XP
+    int level = 1;
+
 public:
     Character(const std::string& n, int maxHp, int lightAtk, int heavyAtk, int potion);
 
-    int getHP() const;          // Current HP
-    int getMaxHP() const;       // Max HP
-    int getLightAttack() const; // Light attack value
-    int getHeavyAttack() const; // Heavy attack value
-    int getPotionHeal() const;  // Potion heal value
+    // Getters
+    int getHP() const { return hp; }
+    int getMaxHP() const { return maxHP; }
+    int getLightAttack() const { return lightAttack; }
+    int getHeavyAttack() const { return heavyAttack; }
+    int getPotionHeal() const { return potionHeal; }
+    std::string getName() const { return name; }
+    int getLevel() const { return level; }
 
-    void takeDamage(int amount); // Reduce HP
-    void heal(int amount);       // Increase HP (up to max)
-    std::string getName() const; // Character name
+    void takeDamage(int amount);
+    void heal(int amount);
+
+    // NEW: Level up on win
+    void levelUp();
 };

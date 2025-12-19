@@ -20,6 +20,7 @@ private:
     sf::Font font;                   // Font used
     size_t currentLine;              // Current dialogue index
     bool active;                     // Is dialogue running
+    sf::RectangleShape background;  // Add this line
 
 public:
     Dialogue();
@@ -31,5 +32,6 @@ public:
     bool isActive() const;                                  // Check active state
     void draw(sf::RenderWindow& window);                    // Draw dialogue
     void setColor(const sf::Color& color); // Set the color of the dialogue text
+    void updateTextAndColor();      // Add this declaration
 
 };

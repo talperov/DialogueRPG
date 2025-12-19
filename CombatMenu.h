@@ -7,18 +7,23 @@ enum class CombatAction { NONE = 0, LIGHT, HEAVY, POTION };
 class CombatMenu
 {
 private:
-    std::vector<sf::Text> optionTexts; // Options as text
-    sf::Font font;                      // Font for options
-    bool active;                        // Is the menu visible
-    CombatAction selection;             // Currently selected action
+    std::vector<sf::Text> optionTexts;
+    sf::Font font;
+    bool active;
+    CombatAction selection;
+    int heavyCooldown;  // 0 = ready, >0 = turns left
 
 public:
     CombatMenu();
     ~CombatMenu();
 
-    void open();                       // Activate menu
-    bool isActive() const;             // Check if menu is active
-    void handleInput(const sf::Event& event); // Detect clicks
-    void draw(sf::RenderWindow& window);      // Draw menu
-    CombatAction getSelection() const;       // Return selected option
+    void open();
+    bool isActive() const;
+    CombatAction getSelection() const;
+    void handleInput(const sf::Event& event);
+    void draw(sf::RenderWindow& window);
+
+    void resetSelection();
+    void triggerHeavyCooldown();
+    void reduceCooldown();
 };

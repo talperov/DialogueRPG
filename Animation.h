@@ -3,7 +3,7 @@
 
 class Animation
 {
-private:
+public:
     // Character textures and sprites
     sf::Texture animeTexture;
     sf::Texture greekTexture;
@@ -11,7 +11,7 @@ private:
     sf::Sprite animeSprite;
     sf::Sprite greekSprite;
     // sf::Sprite goldSprite;
-    
+
     // Enemy sprite
     sf::Texture enemyTexture;  // Enemy texture
     sf::Sprite enemySprite;    // Enemy sprite
@@ -33,7 +33,6 @@ private:
     sf::Texture textBubbleTexture; // Bubble texture
     sf::Sprite  textBubbleSprite;  // Bubble sprite
 
-public:
     Animation();
     ~Animation();
 

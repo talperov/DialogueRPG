@@ -6,15 +6,6 @@ Character::Character(const std::string& n, int maxHp, int lightAtk, int heavyAtk
 {
 }
 
-// Accessors
-int Character::getHP() const { return hp; }
-int Character::getMaxHP() const { return maxHP; }
-int Character::getLightAttack() const { return lightAttack; }
-int Character::getHeavyAttack() const { return heavyAttack; }
-int Character::getPotionHeal() const { return potionHeal; }
-std::string Character::getName() const { return name; }
-
-// Actions
 void Character::takeDamage(int amount)
 {
     hp -= amount;
@@ -25,4 +16,15 @@ void Character::heal(int amount)
 {
     hp += amount;
     if (hp > maxHP) hp = maxHP;
+}
+
+void Character::levelUp()
+{
+    if (level >= 3) return;  // Max level 3
+    level++;
+    maxHP += 30;
+    hp = maxHP;              // Full heal
+    lightAttack += 5;
+    heavyAttack += 8;
+    potionHeal += 10;
 }

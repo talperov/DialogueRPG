@@ -5,7 +5,7 @@ using namespace std;
 
 Animation::Animation() {}
 
-Animation::~Animation(){}
+Animation::~Animation() {}
 
 // Load city/game background
 bool Animation::loadBackground(const sf::RenderWindow& window)
@@ -131,7 +131,7 @@ bool Animation::loadMenuButtons()
 
     playSprite.setPosition(startX, startY);             // Top button
     helpSprite.setPosition(startX, startY + spacing);  // Middle button
-    exitSprite.setPosition(startX, startY + 2*spacing);// Bottom button
+    exitSprite.setPosition(startX, startY + 2 * spacing);// Bottom button
 
     return true;
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Dialogue.h" // Needed for Dialogue::DialogueLine
 #include <vector>
 
@@ -9,7 +9,7 @@ struct Scene
     bool showCharacters;                               // Whether to reveal characters after dialogue
 };
 
-// Intro scene – Left character speaks first
+// Intro scene ï¿½ Left character speaks first
 Scene animeIntroLeft =
 {
     {
@@ -32,7 +32,7 @@ Scene sceneBattleStart =
 {
     {
         { "We must fight together!\nChoose your move wisely.", Dialogue::DialogueLine::Speaker::LEFT },
-        { "I’ve got your back!\nLet’s do this!", Dialogue::DialogueLine::Speaker::RIGHT }
+        { "Iï¿½ve got your back!\nLetï¿½s do this!", Dialogue::DialogueLine::Speaker::RIGHT }
     },
     true // Both characters visible
 };

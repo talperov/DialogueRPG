@@ -2,86 +2,94 @@
 #include <iostream>
 
 Dialogue::Dialogue()
-    : currentLine(0), active(false) // Initialize state
+    : currentLine(0), active(false)
 {
-    if (!font.loadFromFile("Sprites/Fonts/Retro.ttf")) // Load font
-    {
+    if (!font.loadFromFile("Sprites/Fonts/Retro.ttf"))
         std::cout << "Failed to load font!\n";
-    }
 
-    visual.setFont(font);        // Assign font
-    visual.setCharacterSize(18); // Text size
-    visual.setPosition(55.f, 20.f); // Text position
+    // Text setup
+    visual.setFont(font);
+    visual.setCharacterSize(16);
+    visual.setFillColor(sf::Color::White);
+    visual.setPosition(110.f, 80.f);        // Inside the box
+    visual.setStyle(sf::Text::Bold);
+
+    // Background box (semi-transparent black + yellow border)
+    background.setSize(sf::Vector2f(580.f, 80.f));
+    background.setFillColor(sf::Color(0, 0, 0, 200));        // Dark semi-transparent
+    background.setOutlineThickness(3.f);
+    background.setOutlineColor(sf::Color::Yellow);
+    background.setPosition(110.f, 60.f);                     // Box starts here
 }
 
 Dialogue::~Dialogue() {}
 
 void Dialogue::setLine(const std::vector<DialogueLine>& newLines)
 {
-    lines = newLines;          // Store dialogue
-    currentLine = 0;           // Start at first line
-    active = !lines.empty();   // Activate dialogue
+    lines = newLines;
+    currentLine = 0;
+    active = !lines.empty();
 
     if (active)
     {
-        // Set color based on speaker
-        if (lines[currentLine].speaker == DialogueLine::Speaker::LEFT)
-        {
-            visual.setFillColor(sf::Color::Yellow);
-        }
-        else
-        {
-            visual.setFillColor(sf::Color::Cyan);
-        }
-
-        visual.setString(lines[currentLine].text); // Show first line
+        updateTextAndColor();
     }
 }
 
 bool Dialogue::nextLine()
 {
-    if (!active) return false; // Safety check
+    if (!active) return false;
 
-    currentLine++; // Move to next line
-
+    currentLine++;
     if (currentLine >= lines.size())
     {
-        active = false; // Dialogue finished
+        active = false;
         return false;
     }
 
-    // Update color based on speaker
-    if (lines[currentLine].speaker == DialogueLine::Speaker::LEFT)
-        visual.setFillColor(sf::Color::Yellow);
-    else
-        visual.setFillColor(sf::Color::Cyan);
-
-    visual.setString(lines[currentLine].text); // Update text
+    updateTextAndColor();
     return true;
+}
+
+// Helper function to avoid duplicating color logic
+void Dialogue::updateTextAndColor()
+{
+    visual.setString(lines[currentLine].text);
+
+    // Player (LEFT or RIGHT) = White, Enemy = Red
+    if (lines[currentLine].speaker == DialogueLine::Speaker::LEFT ||
+        lines[currentLine].speaker == DialogueLine::Speaker::RIGHT)
+    {
+        visual.setFillColor(sf::Color::White);
+    }
+    else // ENEMY (we'll add this speaker type later)
+    {
+        visual.setFillColor(sf::Color::Red);
+    }
 }
 
 void Dialogue::reset()
 {
-    lines.clear();     // Clear dialogue
-    currentLine = 0;   // Reset index
-    active = false;    // Disable dialogue
+    lines.clear();
+    currentLine = 0;
+    active = false;
 }
 
 bool Dialogue::isActive() const
 {
-    return active; // Return dialogue state
+    return active;
 }
 
 void Dialogue::draw(sf::RenderWindow& window)
 {
     if (active)
     {
-        window.draw(visual); // Draw dialogue text
+        window.draw(background);  // Draw box first
+        window.draw(visual);      // Then text on top
     }
 }
 
 void Dialogue::setColor(const sf::Color& color)
 {
-    visual.setFillColor(color); // Change text color
+    visual.setFillColor(color);
 }
-
