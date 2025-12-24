@@ -1,37 +1,51 @@
 #pragma once
-
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <vector>
 
-class Dialogue
-{
+// Manages dialogue display in the game.
+class Dialogue {
 public:
-    // Struct for each dialogue line with speaker info
-    struct DialogueLine
-    {
-        std::string text;       // Dialogue text
-        enum class Speaker { LEFT, RIGHT } speaker; // Who is speaking
+    // Struct for a single dialogue line with speaker.
+    struct DialogueLine {
+        std::string text;                   // Text of the line.
+        enum class Speaker { LEFT, RIGHT, ENEMY };  // Speaker type.
+        Speaker speaker;                    // Who is speaking.
     };
 
 private:
-    std::vector<DialogueLine> lines; // Dialogue lines with speaker
-    sf::Text visual;                 // On-screen text
-    sf::Font font;                   // Font used
-    size_t currentLine;              // Current dialogue index
-    bool active;                     // Is dialogue running
-    sf::RectangleShape background;  // Add this line
+    std::vector<DialogueLine> lines;    // List of dialogue lines.
+    sf::Text visual;                    // Text object for display.
+    sf::Font font;                      // Font for text.
+    size_t currentLine;                 // Index of current line.
+    bool active;                        // Whether dialogue is active.
+    sf::RectangleShape background;      // Background box for text.
 
 public:
+    // Constructor.
     Dialogue();
+
+    // Destructor.
     ~Dialogue();
 
-    void setLine(const std::vector<DialogueLine>& newLines); // Load dialogue
-    bool nextLine();                                        // Advance dialogue
-    void reset();                                           // Reset dialogue
-    bool isActive() const;                                  // Check active state
-    void draw(sf::RenderWindow& window);                    // Draw dialogue
-    void setColor(const sf::Color& color); // Set the color of the dialogue text
-    void updateTextAndColor();      // Add this declaration
+    // Set new dialogue lines.
+    void setLine(const std::vector<DialogueLine>& newLines);
 
+    // Advance to the next line.
+    bool nextLine();
+
+    // Reset dialogue state.
+    void reset();
+
+    // Check if dialogue is active.
+    bool isActive() const;
+
+    // Draw dialogue on the window.
+    void draw(sf::RenderWindow& window);
+
+    // Set text color.
+    void setColor(const sf::Color& color);
+
+    // Update text and color for current line (internal helper).
+    void updateTextAndColor();
 };

@@ -1,48 +1,21 @@
 ﻿#pragma once
-#include "Dialogue.h" // Needed for Dialogue::DialogueLine
+#include "Dialogue.h"
 #include <vector>
 
-// Scene struct
-struct Scene
-{
-    std::vector<Dialogue::DialogueLine> dialogueLines; // Lines with speaker info
-    bool showCharacters;                               // Whether to reveal characters after dialogue
+// Struct for a game scene with dialogue.
+struct Scene {
+    std::vector<Dialogue::DialogueLine> dialogueLines;  // Lines of dialogue.
+    bool showCharacters;                                // Whether to show characters after dialogue.
 };
 
-// Intro scene � Left character speaks first
-Scene animeIntroLeft =
-{
-    {
-        { "What is THIS!?!?\nWho are you standing beside me?", Dialogue::DialogueLine::Speaker::LEFT }
-    },
-    true // Reveal left character after dialogue
-};
+// Intro scene for left character.
+extern Scene animeIntroLeft;
 
-// Right character (Greek) introduction
-Scene animeIntroRight =
-{
-    {
-        { "Ah! I see you finally arrived!\nI am Greek, your ally!", Dialogue::DialogueLine::Speaker::RIGHT }
-    },
-    true // Reveal right character after dialogue
-};
+// Intro scene for right character.
+extern Scene animeIntroRight;
 
-// Battle start dialogue
-Scene sceneBattleStart =
-{
-    {
-        { "We must fight together!\nChoose your move wisely.", Dialogue::DialogueLine::Speaker::LEFT },
-        { "I�ve got your back!\nLet�s do this!", Dialogue::DialogueLine::Speaker::RIGHT }
-    },
-    true // Both characters visible
-};
+// Battle start scene.
+extern Scene sceneBattleStart;
 
-// You can add more scenes in the same way
-Scene sceneExample =
-{
-    {
-        { "This is a test scene for the dialogue system.", Dialogue::DialogueLine::Speaker::LEFT },
-        { "Right character response goes here.", Dialogue::DialogueLine::Speaker::RIGHT }
-    },
-    true
-};
+// Example scene.
+extern Scene sceneExample;
