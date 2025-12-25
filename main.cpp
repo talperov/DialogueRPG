@@ -15,16 +15,24 @@ enum class GameState { MENU, GAME, HELP, SELECT_FIGHTER, COMBAT, VICTORY, DEFEAT
 enum class ActiveCharacter { NONE, LEFT, RIGHT };
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML RPG");
+    // 720p window — change to sf::Style::Default for windowed mode
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML RPG", sf::Style::Fullscreen);
+    // For windowed 720p instead, use:
+    // sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML RPG", sf::Style::Default);
+
+    // Fixed view: keeps original 800x600 coordinate system perfectly
+    sf::View gameView(sf::FloatRect(0.f, 0.f, 800.f, 600.f));
+    window.setView(gameView);
+
     Animation animation;
     Dialogue dialogue;
     CombatMenu combatMenu;
 
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
 
-    // Updated character names
-    Character leftChar("Bald Saed", 100, 10, 20, 25);      // Left character
-    Character rightChar("Chat Brett", 100, 12, 18, 30);    // Right character
+    // Characters
+    Character leftChar("Bald Saed", 100, 10, 20, 25);
+    Character rightChar("Chat Brett", 100, 12, 18, 30);
     Character enemy("Evil Boss", 100, 15, 25, 0);
 
     HPBar playerBar(&leftChar, sf::Vector2f(50.f, 20.f), sf::Vector2f(200.f, 20.f));
@@ -32,13 +40,12 @@ int main() {
 
     GameState state = GameState::MENU;
     ActiveCharacter activeCharacter = ActiveCharacter::NONE;
-
     bool showLeft = false;
     bool showRight = false;
     bool startedRightDialogue = false;
 
     animation.loadMenuBackground(window);
-    animation.loadMenuButtons(); // Loads Play, Controls, Exit sprites
+    animation.loadMenuButtons(); // Play, Controls, Exit
     animation.createAnime();
     animation.createGreek();
 
@@ -74,11 +81,11 @@ int main() {
         " Press 2 Select Chat Brett\n\n"
         "Combat:\n"
         " Click option or press:\n"
-        "  1  Light Attack\n"
-        "  2  Heavy Attack (2-turn cooldown)\n"
-        "  3  Health Potion\n\n"
+        " 1 Light Attack\n"
+        " 2 Heavy Attack (2-turn cooldown)\n"
+        " 3 Health Potion\n\n"
         "Victory / Defeat:\n"
-        " Click anywhere  Return to main menu\n\n"
+        " Click anywhere Return to main menu\n\n"
         "Main Menu:\n"
         " Click Play, Controls, or Exit\n\n"
         "Click anywhere or press ESC to return",
@@ -86,7 +93,7 @@ int main() {
     helpControls.setFillColor(sf::Color::Cyan);
     helpControls.setPosition(80.f, 240.f);
 
-    // Combat log (debug)
+    // Combat log
     std::vector<std::string> combatLog;
     sf::Text logText("", font, 14);
     logText.setFillColor(sf::Color::White);
@@ -112,13 +119,10 @@ int main() {
     sf::Text playerNameText("", font, 18);
     sf::Text enemyNameText("", font, 18);
     sf::Text playerLevelText("", font, 14);
-
     playerNameText.setFillColor(sf::Color::White);
     playerNameText.setPosition(50.f, 55.f);
-
     enemyNameText.setFillColor(sf::Color::Red);
     enemyNameText.setPosition(550.f, 55.f);
-
     playerLevelText.setFillColor(sf::Color::Yellow);
     playerLevelText.setPosition(50.f, 8.f);
 
@@ -151,7 +155,7 @@ int main() {
             // MAIN MENU
             if (state == GameState::MENU && event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2i pixelPos = sf::Mouse::getPosition(window);
-                sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+                sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos); // Correctly mapped via gameView
 
                 if (animation.getPlaySprite().getGlobalBounds().contains(worldPos)) {
                     state = GameState::GAME;
@@ -207,7 +211,7 @@ int main() {
 
             // SELECT FIGHTER
             if (state == GameState::SELECT_FIGHTER && event.type == sf::Event::KeyPressed) {
-                animation.createEnemy("Sprites/Characters/Bosses/Evil" + std::to_string(std::rand() % 6 + 1) + ".png",
+                animation.createEnemy("Sprites/Characters/Bosses/Evil" + std::to_string(std::rand() % 7 + 1) + ".png",
                     sf::Vector2f(215.f, 100.f), 5.5f);
 
                 int playerLevel = (event.key.code == sf::Keyboard::Num1) ? leftChar.getLevel() : rightChar.getLevel();
@@ -227,7 +231,6 @@ int main() {
                     playerBar.setCharacter(&rightChar);
                     playerNameText.setString("Chat Brett");
                 }
-
                 enemyNameText.setString("Evil Boss");
                 state = GameState::COMBAT;
                 combatMenu.open();
@@ -235,7 +238,6 @@ int main() {
                 addCombatLog("Combat starts!");
                 playerTalkText.setString("");
                 enemyTalkText.setString("");
-
                 updatePlayerTalkPosition();
                 updateCombatLogPosition();
                 continue;
@@ -244,7 +246,6 @@ int main() {
             // COMBAT
             if (state == GameState::COMBAT) {
                 combatMenu.handleInput(event);
-
                 if (!combatMenu.isActive() && combatMenu.getSelection() != CombatAction::NONE) {
                     Character* player = (activeCharacter == ActiveCharacter::LEFT) ? &leftChar : &rightChar;
                     int dmg = 0;
@@ -285,6 +286,7 @@ int main() {
                         std::string path = "Sprites/Characters/";
                         path += (activeCharacter == ActiveCharacter::LEFT) ? "AnimeMan/AnimeLVL" : "GreekMan/GreekLVL";
                         path += std::to_string(player->getLevel()) + ".png";
+
                         if (activeCharacter == ActiveCharacter::LEFT)
                             animation.animeTexture.loadFromFile(path);
                         else
@@ -365,7 +367,6 @@ int main() {
         else if (state == GameState::COMBAT) {
             window.draw(animation.getBackground());
             window.draw(animation.getEnemySprite());
-
             if (activeCharacter == ActiveCharacter::LEFT)
                 window.draw(animation.getAnimeSprite());
             else
@@ -373,29 +374,26 @@ int main() {
 
             playerBar.draw(window);
             enemyBar.draw(window);
-
             playerLevelText.setString("LVL " + std::to_string(currentPlayer->getLevel()));
             window.draw(playerLevelText);
             window.draw(playerNameText);
             window.draw(enemyNameText);
-
             window.draw(playerTalkText);
             window.draw(enemyTalkText);
-
             dialogue.draw(window);
             combatMenu.draw(window);
-            window.draw(logText);
+          //  window.draw(logText);
         }
         else if (state == GameState::VICTORY || state == GameState::DEFEAT) {
             sf::Text result(state == GameState::VICTORY ? "VICTORY!" : "DEFEATED...", font, 40);
             result.setFillColor(state == GameState::VICTORY ? sf::Color::Green : sf::Color::Red);
             result.setPosition(200.f, 230.f);
             window.draw(result);
-            window.draw(logText);
+      //      window.draw(logText);
         }
 
         window.display();
     }
 
     return 0;
-} 
+}
