@@ -13,3 +13,6 @@ Main Goal of this Program/Project/Game Details Below:
 * Show my understanding of Big O Time Complexity
 * Show my understanding of Data Structures and Algorithms.
 * Again, just to have fun, this is a personal project after all, don't put too much pressure on yourself.
+
+Here's the link to the game!!! 
+https://tony21tony1.itch.io/the-bald-and-the-brettiful 
